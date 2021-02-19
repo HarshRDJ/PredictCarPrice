@@ -25,43 +25,43 @@ import matplotlib.pyplot as plt
 
 # import dataset
 df = pd.read_csv('car data.csv')
-#print(df.head(2))
-#print(df.shape)
-#print(df['Seller_Type'].unique())
-#print(df['Transmission'].unique())
-#print(df['Owner'].unique())
+print(df.head(2))
+print(df.shape)
+print(df['Seller_Type'].unique())
+print(df['Transmission'].unique())
+print(df['Owner'].unique())
 
 # checking missing or null values
-#print(df.isnull().sum())
+print(df.isnull().sum())
 
 #print(df.columns)
 final_dataset = df[['Year', 'Selling_Price', 'Present_Price', 'Kms_Driven','Fuel_Type', 'Seller_Type', 'Transmission', 'Owner']]
 final_dataset['Current_Year']=2020
-#print(final_dataset.head(2))
+print(final_dataset.head(2))
 
 final_dataset['no_of_years_old'] = final_dataset['Current_Year'] - final_dataset['Year']
-#print(final_dataset.head(2))
+print(final_dataset.head(2))
 
 final_dataset.drop(['Year'], axis=1, inplace=True)
 final_dataset.drop(['Current_Year'], axis=1, inplace=True)
-#print(final_dataset.head(2))
+print(final_dataset.head(2))
 
 final_dataset = pd.get_dummies(final_dataset, drop_first=True)
-#print(final_dataset.head(5))
-#print(final_dataset.columns)
+print(final_dataset.head(5))
+print(final_dataset.columns)
 
-#print(final_dataset.corr())
-#sns.pairplot(final_dataset,height=1)
-#plt.show()
+print(final_dataset.corr())
+sns.pairplot(final_dataset,height=1)
+plt.show()
 
-"""
+
 # plot the heat map for some more information
 corrmat = final_dataset.corr()
 top_corr_feature = corrmat.index
 plt.figure(figsize=(20,20))
 h = sns.heatmap(final_dataset[top_corr_feature].corr(), annot=True, cmap='RdYlGn')
-#plt.show()
-"""
+plt.show()
+
 
 # independent and dependent feature
 X = final_dataset.iloc[:, 1:]
@@ -71,21 +71,19 @@ y = final_dataset.iloc[:, 0]
 from sklearn.ensemble import ExtraTreesRegressor
 model = ExtraTreesRegressor()
 model.fit(X,y)
-#print(model.feature_importances_)
+print(model.feature_importances_)
 
 # plot graph of feature importance for better visualization
 feat_importances = pd.Series(model.feature_importances_, index=X.columns)
 feat_importances.nlargest(5).plot(kind='barh')
-#plt.show()
+plt.show()
 
 from sklearn.model_selection import train_test_split
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=.2)
 
-#print(X_train.shape)
-
 # Hyperparameters
 n_estimators = [int(x) for x in np.linspace(start=100, stop=1200, num=12)]
-#print(n_estimators)
+print(n_estimators)
 
 # Randomize Search CV
 from sklearn.model_selection import RandomizedSearchCV
@@ -108,7 +106,7 @@ random_grid = {'n_estimators': n_estimators,
                'min_samples_split': min_samples_split,
                'min_samples_leaf': min_samples_leaf
                }
-#print(random_grid)
+print(random_grid)
 
 def random_search():
     from sklearn.ensemble import RandomForestRegressor
